@@ -1,0 +1,67 @@
+{
+  "_from": "hour-arithmetic",
+  "_id": "hour-arithmetic@1.0.0",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/hour-arithmetic",
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "hour-arithmetic",
+    "name": "hour-arithmetic",
+    "escapedName": "hour-arithmetic",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/hour-arithmetic/-/hour-arithmetic-1.0.0.tgz",
+  "_shasum": "",
+  "_spec": "hour-arithmetic",
+  "_where": "/home/rajasakthiyan.g",
+  "author": {
+    "name": "RajaSakthiyan.G"
+  },
+  "bugs": {
+    "url": "https://github.com/RajaSakthiyan/hour-arithmetic/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "Library for arithmetic operation on 12-hour and 24-hour formats",
+  "devDependencies": {
+    "coveralls": "^2.11.2",
+    "istanbul": "^0.3.14",
+    "jshint": "^2.7.0",
+    "tape": "^4.0.0"
+  },
+  "homepage": "https://github.com/RajaSakthiyan/hour-arithmetic",
+  "keywords": [
+    "convert",
+    "date",
+    "datetime",
+    "arithmetic",
+    "format",
+    "hour",
+    "time",
+    "12",
+    "24"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "hour-arithmetic",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RajaSakthiyan/hour-arithmetic.git"
+  },
+  "scripts": {
+    "coverage": "istanbul cover test/*.js",
+    "coveralls": "npm run coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "lint": "jshint .",
+    "test": "tape test/*.js",
+    "validate": "npm run lint && npm test && npm run coveralls"
+  },
+  "version": "1.0.0"
+}
