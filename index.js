@@ -121,7 +121,4 @@ const globalFunctions = {
 };
 
 module.exports = globalFunctions
-console.log(globalFunctions.to12Hour({
-    hour: 22,
-    minute: 23
-}));
+console.log(globalFunctions.add24Hour("23:21", 3, 46));
