@@ -14,20 +14,16 @@ const globalFunctions = {
      * @return {object} { hour, minute, second, meridiem }
      */
     to12Hour: function to12Hour(hour) {
-        let _24 = null
         if (typeof hour === "string")
-            _24 = globalFunctions.get24Hour(hour)
-        else
-            _24 = hour
-        if (!_24.hour)
+            hour = globalFunctions.get24Hour(hour)
+        if (!hour.hour)
             return null
-        let _hour = parseInt(_24.hour)
-        let meridiem = _hour < 12 ? 'am' : 'pm';
+        let _hour = parseInt(hour.hour)
         return {
             hour: ('0' + String((_hour + 11) % 12 + 1)).slice(-2, 3),
-            minute: ('0' + String(_24.minute)).slice(-2, 3),
-            second: ('0' + String(_24.second)).slice(-2, 3),
-            meridiem: meridiem,
+            minute: ('0' + String(hour.minute)).slice(-2, 3),
+            second: ('0' + String(hour.second)).slice(-2, 3),
+            meridiem: _hour < 12 ? 'am' : 'pm',
         };
     },
 
@@ -38,17 +34,14 @@ const globalFunctions = {
      * @return {object} { hour, minute, second }
      */
     to24Hour: function to24Hour(hour) {
-        let _12 = null
         if (typeof hour === "string")
-            _12 = globalFunctions.get12Hour(hour)
-        else
-            _12 = hour
-        if (!_12.hour)
+            hour = globalFunctions.get12Hour(hour)
+        if (!hour.hour)
             return null
         return {
-            hour: ('0' + String((_12.meridiem.toLowerCase() === 'am' ? 0 : 12) + (parseInt(_12.hour) % 12))).slice(-2, 3),
-            minute: ('0' + String(_12.minute)).slice(-2, 3),
-            second: ('0' + String(_12.second)).slice(-2, 3),
+            hour: ('0' + String((hour.meridiem.toLowerCase() === 'am' ? 0 : 12) + (parseInt(hour.hour) % 12))).slice(-2, 3),
+            minute: ('0' + String(hour.minute)).slice(-2, 3),
+            second: ('0' + String(hour.second)).slice(-2, 3),
         }
     },
 
@@ -101,10 +94,14 @@ const globalFunctions = {
 
     },
 
-    add24Hour: (_24hours, hours, minutes) => {
+    add24Hour: (_24hours, hour) => {
+        if (typeof hour === "string")
+            hour = globalFunctions.getHour(hour)
+        if (!hour.hour)
+            return null
         let [_hours, _minutes] = _24hours.split(':').map(val => parseInt(val))
-        _hours += (hours + Math.floor((_minutes + minutes) / 60))
-        _minutes = Math.floor((_minutes + minutes) % 60)
+        _hours += (hour.hour + Math.floor((_minutes + hour.minute) / 60))
+        _minutes = Math.floor((_minutes + hour.minute) % 60)
         if (_hours >= 24)
             _hours -= 24
         return ('0' + String(_hours)).slice(-2, 3) + ':' + ('0' + String(_minutes)).slice(-2, 3)

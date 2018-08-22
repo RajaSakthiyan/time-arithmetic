@@ -30,7 +30,7 @@
   },
   "bundleDependencies": false,
   "deprecated": false,
-  "description": "Library for arithmetic operation and conversion of 12-hour and 24-hour formats",
+  "description": "Utility library for doing arithmetic operation on of 12-hour and 24-hour format and conversion among these formats",
   "devDependencies": {
     "coveralls": "^2.11.2",
     "istanbul": "^0.3.14",
