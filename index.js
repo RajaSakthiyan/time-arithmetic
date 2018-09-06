@@ -157,12 +157,20 @@ const globalFunctions = {
   },
 
   _diff24Hour: (_24hour, hour) => {
-    console.log('_24hour --> ', _24hour);
-    let _hours =
-      Math.abs(Math.abs(_24hour.hour - hour.hour) - Math.floor(Math.abs(_24hour.minute - hour.minute) / 60));
-    if (_hours >= 24) _hours -= 24;
-    let _minutes = Math.floor(Math.abs(Math.abs(_24hour.minute - hour.minute) - Math.floor(Math.abs(_24hour.second - hour.second) / 60)) % 60);
-    let _seconds = Math.floor(Math.abs(_24hour.second - hour.second) % 60);
+    let _hours = 0
+    let _minutes = 0
+    let _seconds = _24hour.second - hour.second;
+    if (_seconds < 0) {
+      _seconds += 60
+      _minutes = -1
+    }
+    _minutes += _24hour.minute - hour.minute
+    if (_minutes < 0) {
+      _minutes += 60
+      _hours = -1
+    }
+    _hours += _24hour.hour - hour.hour
+    if (_hours < 0) _hours += 24;
     return {
       hour: _hours,
       minute: _minutes,
@@ -223,8 +231,8 @@ module.exports = globalFunctions;
 //   hour: 23,
 //   minute: 23
 // }));
-console.log(globalFunctions.diffHour("01:12:28 PM", {
-  hour: 13,
+console.log(globalFunctions.diffHour("01:12:23 PM", {
+  hour: 12,
   minute: 19,
   second: 45
 }));
