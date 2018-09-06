@@ -32,8 +32,7 @@ const globalFunctions = {
   to24Hour: function to24Hour(hour) {
     if (typeof hour === "string") hour = globalFunctions.get12Hour(hour);
     return {
-      hour:
-        (hour.meridiem.toLowerCase() === "am" ? 0 : 12) +
+      hour: (hour.meridiem.toLowerCase() === "am" ? 0 : 12) +
         (hour.hour % 12),
       minute: hour.minute,
       second: hour.second
@@ -158,6 +157,7 @@ const globalFunctions = {
   },
 
   _diff24Hour: (_24hour, hour) => {
+    console.log('_24hour --> ', _24hour);
     let _hours =
       Math.abs(Math.abs(_24hour.hour - hour.hour) - Math.floor(Math.abs(_24hour.minute - hour.minute) / 60));
     if (_hours >= 24) _hours -= 24;
@@ -172,19 +172,21 @@ const globalFunctions = {
 
   _diff12Hour: (_12hour, hour) => {
     let _24hour = globalFunctions.to24Hour(_12hour)
+    let _dif24 = globalFunctions._diff24Hour(
+      _24hour, hour)
+    console.log(_dif24);
     if (_24hour)
       return globalFunctions.to12Hour(
-        globalFunctions._diff24Hour(
-          _24hour, hour)
+        _dif24
       )
     return null
   },
 
   diffHour: (_hour, hour) => {
     if (Regex24Hour.test(_hour))
-      return globalFunctions._add24Hour(globalFunctions.get24Hour(_hour), globalFunctions.getHour(hour))
+      return globalFunctions._diff24Hour(globalFunctions.get24Hour(_hour), globalFunctions.getHour(hour))
     else if (Regex12Hour.test(_hour))
-      return globalFunctions._add12Hour(globalFunctions.get12Hour(_hour), globalFunctions.getHour(hour))
+      return globalFunctions._diff12Hour(globalFunctions.get12Hour(_hour), globalFunctions.getHour(hour))
     else
       return null
   },
@@ -214,10 +216,15 @@ const globalFunctions = {
 };
 
 module.exports = globalFunctions;
-console.log(globalFunctions.addHour("15:12:28", "23 hours 23 minutes 46 seconds"));
-console.log(globalFunctions.compareHour("28:12:28", "22:12:28").gt);
-console.log(globalFunctions.addHour("03:12:28 PM", "23 hours 23 minutes 46 seconds"));
-console.log(globalFunctions.addHour("01:12:28 PM", {
-  hour: 23,
-  minute: 23
+// console.log(globalFunctions.addHour("15:12:28", "23 hours 23 minutes 46 seconds"));
+// console.log(globalFunctions.compareHour("28:12:28", "22:12:28").gt);
+// console.log(globalFunctions.addHour("03:12:28 PM", "23 hours 23 minutes 46 seconds"));
+// console.log(globalFunctions.addHour("01:12:28 PM", {
+//   hour: 23,
+//   minute: 23
+// }));
+console.log(globalFunctions.diffHour("01:12:28 PM", {
+  hour: 13,
+  minute: 19,
+  second: 45
 }));
