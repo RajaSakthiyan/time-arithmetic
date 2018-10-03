@@ -1,3 +1,17 @@
+// test("", function(assert) {
+//   let testcases = [];
+//   testcases.forEach(function(each_case) {
+//     assert.deepEqual(
+//       hour.get12Hour(each_case.input),
+//       each_case.expected,
+//       ") should convert as readable 12-hour format"
+//     );
+//   });
+
+//   assert.end();
+// });
+
+
 function to12hourCase () {
   testcases = []
   for (let i = 0;i < 24;i++) {

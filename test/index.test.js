@@ -562,36 +562,60 @@ test("getHour", function(assert) {
   assert.end();
 });
 
-// test('compareHour', function (assert) {
-//   let compare = hour.compareHour("11.23.45", "11.23.45")
-//   assert.deepEqual(compare.eq, each_case.expected.eq,
-//     ') should equals hour')
-//   compare = hour.compareHour("12.23.45", "11.23.45")
-//   assert.deepEqual(compare.gt, each_case.expected.gt,
-//     ') should greater than hour')
-//   compare = hour.compareHour("11.23.45 ", "11.23.45")
-//   assert.deepEqual(compare.gte, each_case.expected.gte,
-//     ') should greater than  hour')
-//   assert.deepEqual(compare.gte, each_case.expected.gte,
-//     ') should equals hour')
-//   assert.deepEqual(compare.lt, each_case.expected.lt,
-//     ') should lesser than hour')
-//   assert.deepEqual(compare.lte, each_case.expected.lte,
-//     ') should lesser than  hour')
-//   assert.deepEqual(compare.lte, each_case.expected.lte,
-//     ') should equals hour')
-//   assert.deepEqual(compare.ne, each_case.expected.ne,
-//     ') should not equals hour')
+test("compareHour", function(assert) {
+  assert.deepEqual(
+    hour.compareHour("14:23:45", "2.23.45 PM").eq,
+    true,
+    ") should equals hour"
+  );
+  assert.deepEqual(
+    hour.compareHour("12.23.45", "11.23.45").gt,
+    true,
+    ") should greater than hour"
+  );
+  assert.deepEqual(
+    hour.compareHour("11.23.45 ", "11.23.45").gte,
+    true,
+    ") should equal than  hour"
+  );
+  assert.deepEqual(
+    hour.compareHour("1:23:45 PM", "11.23.45 AM").gte,
+    true,
+    ") should greater hour"
+  );
+  assert.deepEqual(
+    hour.compareHour("11.23.45 AM", "13:23:45").lt,
+    true,
+    ") should lesser than hour"
+  );
+  assert.deepEqual(
+    hour.compareHour("2:23:45 AM", "1:23:45 PM").lte,
+    true,
+    ") should lesser than  hour"
+  );
+  assert.deepEqual(
+    hour.compareHour("2:23:45 PM", "14:45:21").lte,
+    true,
+    ") should equals hour"
+  );
+  assert.deepEqual(
+    hour.compareHour("2:23:45 PM", "2:23:45 AM").ne,
+    true,
+    ") should not equals hour"
+  );
 
-//   assert.end()
-// })
+  assert.end();
+});
 
-// test('', function (assert) {
-//   let testcases = []
-// testcases.forEach(function (each_case) {
-//   assert.deepEqual(hour.get12Hour(each_case.input), each_case.expected,
-//     ') should convert as readable 12-hour format')
-// })
+// test("", function(assert) {
+//   let testcases = [];
+//   testcases.forEach(function(each_case) {
+//     assert.deepEqual(
+//       hour.get12Hour(each_case.input),
+//       each_case.expected,
+//       ") should convert as readable 12-hour format"
+//     );
+//   });
 
-// assert.end()
-// })
+//   assert.end();
+// });
