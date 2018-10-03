@@ -303,26 +303,25 @@ test('getHour', function (assert) {
 })
 
 test('compareHour', function (assert) {
-  let testcases = []
-  testcases.forEach(function (each_case) {
-    let compare = hour.compareHour(each_case.input.hours1, each_case.input.hours2)
-    assert.deepEqual(compare.eq, each_case.expected.eq,
-      ') should equals hour')
-    assert.deepEqual(compare.gt, each_case.expected.gt,
-      ') should greater than hour')
-    assert.deepEqual(compare.gte, each_case.expected.gte,
-      ') should greater than  hour')
-    assert.deepEqual(compare.gte, each_case.expected.gte,
-      ') should equals hour')
-    assert.deepEqual(compare.lt, each_case.expected.lt,
-      ') should lesser than hour')
-    assert.deepEqual(compare.lte, each_case.expected.lte,
-      ') should lesser than  hour')
-    assert.deepEqual(compare.lte, each_case.expected.lte,
-      ') should equals hour')
-    assert.deepEqual(compare.ne, each_case.expected.ne,
-      ') should not equals hour')
-  })
+  let compare = hour.compareHour("11.23.45", "11.23.45")
+  assert.deepEqual(compare.eq, each_case.expected.eq,
+    ') should equals hour')
+  compare = hour.compareHour("12.23.45", "11.23.45")
+  assert.deepEqual(compare.gt, each_case.expected.gt,
+    ') should greater than hour')
+  compare = hour.compareHour("11.23.45 ", "11.23.45")
+  assert.deepEqual(compare.gte, each_case.expected.gte,
+    ') should greater than  hour')
+  assert.deepEqual(compare.gte, each_case.expected.gte,
+    ') should equals hour')
+  assert.deepEqual(compare.lt, each_case.expected.lt,
+    ') should lesser than hour')
+  assert.deepEqual(compare.lte, each_case.expected.lte,
+    ') should lesser than  hour')
+  assert.deepEqual(compare.lte, each_case.expected.lte,
+    ') should equals hour')
+  assert.deepEqual(compare.ne, each_case.expected.ne,
+    ') should not equals hour')
 
   assert.end()
 })

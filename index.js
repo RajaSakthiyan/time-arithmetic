@@ -3,8 +3,6 @@
 const Regex24Hour = /^(0?[1,2]?[0-9])\W*?([0-5]?[0-9])\W*?([0-5]?[0-9])?$/i
 const Regex12Hour = /^(0?[1-9]|1[0-2])\W*?([0-5]?[0-9])\W*?([0-5]?[0-9])?(?:\s*?|\W*?)([AP]M)$/i
 const RegExHour = /^(?:(\d*?)\s*?hours?)?\s*?(?:(\d*?)\s*?minutes?)?\s*?(?:(\d*?)\s*?seconds?)?$/i
-const Regex24HourDelimit = /^0?[1,2]?[0-9](\W*?)[0-5]?[0-9]\W*?(?:[0-5]?[0-9])?$/i
-const Regex12HourDelimit = /^(?:0?[1-9]|1[0-2])(\W*?)(?:[0-5]?[0-9])\W*?(?:[0-5]?[0-9])?(?:\s*?|\W*?)(?:[AP]M)$/i
 
 const globalFunctions = {
   /**
@@ -32,8 +30,8 @@ const globalFunctions = {
   to24Hour: function to24Hour (hour) {
     if (typeof hour === 'string') hour = globalFunctions.get12Hour(hour)
     return {
-      hour: (hour.meridiem.toLowerCase() === 'am' ? 0 : 12) +
-        (hour.hour % 12),
+      hour: hour.meridiem ? ((hour.meridiem.toLowerCase() === 'am' ? 0 : 12) +
+      (hour.hour % 12)) : NaN,
       minute: hour.minute,
       second: hour.second
     }
@@ -79,7 +77,7 @@ const globalFunctions = {
           hour: NaN,
           minute: NaN,
           second: NaN,
-          meridiem: 'NaN'
+          meridiem: null
       }
       return {
         hour: parseInt(matches[1]) || 0,
@@ -103,19 +101,22 @@ const globalFunctions = {
    * @return {object} { hour, minute, second}
    */
   getHour: hour => {
+    hour = hour.trim()
     if (typeof hour === 'string') {
-      let matches = hour.trim().match(RegExHour) || []
-      if (!matches.length) 
+      let matches = hour.match(RegExHour) || hour.match(Regex12Hour) || hour.match(Regex24Hour) || []
+      if (!matches.length)
         hour = {
           hour: NaN,
           minute: NaN,
-          second: NaN
+          second: NaN,
+          meridiem: null
       }
       else
         hour = {
           hour: parseInt(matches[1]) || 0,
           minute: parseInt(matches[2]) || 0,
-          second: parseInt(matches[3]) || 0
+          second: parseInt(matches[3]) || 0,
+          meridiem: (matches[4] || '').toLowerCase() || null
       }
     }
     return hour
@@ -195,7 +196,11 @@ const globalFunctions = {
       return null
   },
 
-  compareHour: (hours1, hours2) => {
+  compareHour1: (hours1, hours2) => {
+
+    const Regex24HourDelimit = /^0?[1,2]?[0-9](\W*?)[0-5]?[0-9]\W*?(?:[0-5]?[0-9])?$/i
+    const Regex12HourDelimit = /^(?:0?[1-9]|1[0-2])(\W*?)(?:[0-5]?[0-9])\W*?(?:[0-5]?[0-9])?(?:\s*?|\W*?)(?:[AP]M)$/i
+
     let match1 = (Regex24HourDelimit.test(hours1.trim()) &&
       hours1.trim().match(Regex24HourDelimit)) ||
       (Regex12HourDelimit.test(hours1.trim()) &&
@@ -216,12 +221,26 @@ const globalFunctions = {
       lte: _hours1 <= _hours2,
       ne: _hours1 != _hours2
     }
+  },
+  compareHour: (hours1, hours2) => {
+    let _hours1 = getHour(hours1)
+    let _hours2 = getHour(hours2)
+    _hours1 = _hours1.meridiem ? to24Hour(_hours1) : _hours1
+    _hours2 = _hours2.meridiem ? to24Hour(_hours2) : _hours2
+    return {
+      eq: _hours1.hour == _hours2.hour,
+      gt: _hours1.hour > _hours2.hour,
+      gte: _hours1.hour >= _hours2.hour,
+      lt: _hours1.hour < _hours2.hour,
+      lte: _hours1.hour <= _hours2.hour,
+      ne: _hours1.hour != _hours2.hour
+    }
   }
 }
 
 module.exports = globalFunctions
 // console.log(globalFunctions.addHour("15:12:28", "23 hours 23 minutes 46 seconds"))
-// console.log(globalFunctions.compareHour("28:12:28", "22:12:28").gt)
+console.log(globalFunctions.compareHour('28:12:28', '22:12:28').gt)
 // console.log(globalFunctions.addHour("03:12:28 PM", "23 hours 23 minutes 46 seconds"))
 // console.log(globalFunctions.addHour("01:12:28 PM", {
 //   hour: 23,
