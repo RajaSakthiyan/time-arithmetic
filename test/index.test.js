@@ -1,9 +1,9 @@
 "use strict";
 
-let test = require("tape");
+let tape = require("tape");
 let hour = require("..");
 
-test("to12Hour", function(assert) {
+tape("to12Hour", function(assert) {
   let testcases = [
     {
       input: "00:00:00",
@@ -117,7 +117,7 @@ test("to12Hour", function(assert) {
   assert.end();
 });
 
-test("get12Hour", function(assert) {
+tape("get12Hour", function(assert) {
   let testcases = [
     {
       input: { hour: 12, minute: 0, second: 0, meridiem: "am" },
@@ -228,7 +228,7 @@ test("get12Hour", function(assert) {
   assert.end();
 });
 
-test("to24Hour", function(assert) {
+tape("to24Hour", function(assert) {
   let testcases = [
     /* no zero prefix */
     {
@@ -342,7 +342,7 @@ test("to24Hour", function(assert) {
   assert.end();
 });
 
-test("get24Hour", function(assert) {
+tape("get24Hour", function(assert) {
   let testcases = [
     {
       input: { hour: 12, minute: 0, second: 0, meridiem: null },
@@ -453,7 +453,7 @@ test("get24Hour", function(assert) {
   assert.end();
 });
 
-test("getHour", function(assert) {
+tape("getHour", function(assert) {
   let testcases = [
     {
       input: "0 hours 0 minutes 0 seconds",
@@ -562,7 +562,7 @@ test("getHour", function(assert) {
   assert.end();
 });
 
-test("compareHour", function(assert) {
+tape("compareHour", function(assert) {
   assert.deepEqual(
     hour.compareHour("14:23:45", "2.23.45 PM").eq,
     true,
@@ -607,7 +607,7 @@ test("compareHour", function(assert) {
   assert.end();
 });
 
-// test("", function(assert) {
+// tape("", function(assert) {
 //   let testcases = [];
 //   testcases.forEach(function(each_case) {
 //     assert.deepEqual(
