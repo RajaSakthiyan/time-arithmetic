@@ -4,7 +4,7 @@ const Regex24Hour = /^(0?[1,2]?[0-9])\W*?([0-5]?[0-9])\W*?([0-5]?[0-9])?$/i;
 const Regex12Hour = /^(0?[1-9]|1[0-2])\W*?([0-5]?[0-9])\W*?([0-5]?[0-9])?(?:\s*?|\W*?)([AP]M)$/i;
 const RegExHour = /^(?:(\d*?)\s*?hours?)?\s*?(?:(\d*?)\s*?minutes?)?\s*?(?:(\d*?)\s*?seconds?)?$/i;
 
-const hourArithmetic = {
+const timeArithmetic = {
   /**
    * Convert 24-hour format to 12-hour object.
    *
@@ -12,7 +12,7 @@ const hourArithmetic = {
    * @return {object} { hour, minute, second, meridiem }
    */
   to12Hour: function to12Hour(hour) {
-    if (typeof hour === "string") hour = hourArithmetic.get24Hour(hour);
+    if (typeof hour === "string") hour = timeArithmetic.get24Hour(hour);
     return {
       hour: ((hour.hour + 11) % 12) + 1,
       minute: hour.minute,
@@ -28,7 +28,7 @@ const hourArithmetic = {
      * @param {string} hour 12 hour format to convert
      * @return {object} { hour, minute, second }
      */
-    if (typeof hour === "string") hour = hourArithmetic.get12Hour(hour);
+    if (typeof hour === "string") hour = timeArithmetic.get12Hour(hour);
     return {
       hour: hour.meridiem
         ? (hour.meridiem.toLowerCase() === "am" ? 0 : 12) + (hour.hour % 12)
@@ -143,7 +143,7 @@ const hourArithmetic = {
   },
 
   _add24Hour: (_24hour, hour) => {
-    hour = hour.meridiem ? hourArithmetic.to24Hour(hour) : hour;
+    hour = hour.meridiem ? timeArithmetic.to24Hour(hour) : hour;
     let _hours =
       _24hour.hour +
       hour.hour +
@@ -165,10 +165,10 @@ const hourArithmetic = {
   },
 
   _add12Hour: (_12hour, hour) => {
-    let _24hour = hourArithmetic.to24Hour(_12hour);
+    let _24hour = timeArithmetic.to24Hour(_12hour);
     if (_24hour) {
-      _24hour = hourArithmetic._add24Hour(_24hour, hour);
-      let _12hour = hourArithmetic.to12Hour(_24hour);
+      _24hour = timeArithmetic._add24Hour(_24hour, hour);
+      let _12hour = timeArithmetic.to12Hour(_24hour);
       _12hour.day = _24hour.day;
       return _12hour;
     }
@@ -177,14 +177,14 @@ const hourArithmetic = {
 
   addHour: (_hour, hour) => {
     if (Regex24Hour.test(_hour))
-      return hourArithmetic._add24Hour(
-        hourArithmetic.get24Hour(_hour),
-        hourArithmetic.getHour(hour)
+      return timeArithmetic._add24Hour(
+        timeArithmetic.get24Hour(_hour),
+        timeArithmetic.getHour(hour)
       );
     else if (Regex12Hour.test(_hour))
-      return hourArithmetic._add12Hour(
-        hourArithmetic.get12Hour(_hour),
-        hourArithmetic.getHour(hour)
+      return timeArithmetic._add12Hour(
+        timeArithmetic.get12Hour(_hour),
+        timeArithmetic.getHour(hour)
       );
     else return null;
   },
@@ -213,31 +213,31 @@ const hourArithmetic = {
   },
 
   _diff12Hour: (_12hour, hour) => {
-    let _24hour = hourArithmetic.to24Hour(_12hour);
-    let _dif24 = hourArithmetic._diff24Hour(_24hour, hour);
-    if (_24hour) return hourArithmetic.to12Hour(_dif24);
+    let _24hour = timeArithmetic.to24Hour(_12hour);
+    let _dif24 = timeArithmetic._diff24Hour(_24hour, hour);
+    if (_24hour) return timeArithmetic.to12Hour(_dif24);
     return null;
   },
 
   diffHour: (_hour, hour) => {
     if (Regex24Hour.test(_hour))
-      return hourArithmetic._diff24Hour(
-        hourArithmetic.get24Hour(_hour),
-        hourArithmetic.getHour(hour)
+      return timeArithmetic._diff24Hour(
+        timeArithmetic.get24Hour(_hour),
+        timeArithmetic.getHour(hour)
       );
     else if (Regex12Hour.test(_hour))
-      return hourArithmetic._diff12Hour(
-        hourArithmetic.get12Hour(_hour),
-        hourArithmetic.getHour(hour)
+      return timeArithmetic._diff12Hour(
+        timeArithmetic.get12Hour(_hour),
+        timeArithmetic.getHour(hour)
       );
     else return null;
   },
 
   compareHour: (hours1, hours2) => {
-    let _hours1 = hourArithmetic.getHour(hours1);
-    let _hours2 = hourArithmetic.getHour(hours2);
-    _hours1 = _hours1.meridiem ? hourArithmetic.to24Hour(_hours1) : _hours1;
-    _hours2 = _hours2.meridiem ? hourArithmetic.to24Hour(_hours2) : _hours2;
+    let _hours1 = timeArithmetic.getHour(hours1);
+    let _hours2 = timeArithmetic.getHour(hours2);
+    _hours1 = _hours1.meridiem ? timeArithmetic.to24Hour(_hours1) : _hours1;
+    _hours2 = _hours2.meridiem ? timeArithmetic.to24Hour(_hours2) : _hours2;
     return {
       eq: _hours1.hour == _hours2.hour,
       gt: _hours1.hour > _hours2.hour,
@@ -249,18 +249,4 @@ const hourArithmetic = {
   }
 };
 
-module.exports = hourArithmetic;
-// console.log(hourArithmetic.addHour("15:12:28", "23 hours 23 minutes 46 seconds"))
-// console.log(("03:12:28 PM", "11:23:00 PM"));
-console.log(hourArithmetic.addHour("3:12:28", "88 seconds"));
-// console.log(hourArithmetic.addHour("01:12:28 PM", {
-//   hour: 23,
-//   minute: 23
-// }))
-console.log(
-  hourArithmetic.diffHour("01:12:23 PM", {
-    hour: 24,
-    minute: 19,
-    second: 45
-  })
-);
+module.exports = timeArithmetic;

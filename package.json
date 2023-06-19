@@ -28,13 +28,10 @@
   "bugs": {
     "url": "https://github.com/RajaSakthiyan/hour-arithmetic/issues"
   },
-  "bundleDependencies": false,
+  "bundleDependencies": [],
   "deprecated": false,
   "description": "Utility library for doing arithmetic operation on of 12-hour and 24-hour format and conversion among these formats",
   "devDependencies": {
-    "coveralls": "^2.11.2",
-    "istanbul": "^0.3.14",
-    "jshint": "^2.7.0",
     "tape": "^4.9.1"
   },
   "homepage": "https://github.com/RajaSakthiyan/hour-arithmetic",
@@ -57,11 +54,7 @@
     "url": "git+https://github.com/RajaSakthiyan/hour-arithmetic.git"
   },
   "scripts": {
-    "coverage": "istanbul cover test/*.js",
-    "coveralls": "npm run coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "lint": "jshint .",
-    "test": "tape test/*.js",
-    "validate": "npm run lint && npm test && npm run coveralls"
+    "test": "tape test/*.js"
   },
   "version": "1.0.0"
 }
