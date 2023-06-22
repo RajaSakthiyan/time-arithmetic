@@ -1,8 +1,10 @@
 "use strict";
 
 const Regex24Hour = /^(0?[1,2]?[0-9])\W*?([0-5]?[0-9])\W*?([0-5]?[0-9])?$/i;
-const Regex12Hour = /^(0?[1-9]|1[0-2])\W*?([0-5]?[0-9])\W*?([0-5]?[0-9])?(?:\s*?|\W*?)([AP]M)$/i;
-const RegExHour = /^(?:(\d*?)\s*?hours?)?\s*?(?:(\d*?)\s*?minutes?)?\s*?(?:(\d*?)\s*?seconds?)?$/i;
+const Regex12Hour =
+  /^(0?[1-9]|1[0-2])\W*?([0-5]?[0-9])\W*?([0-5]?[0-9])?(?:\s*?|\W*?)([AP]M)$/i;
+const RegExHour =
+  /^(?:(\d*?)\s*?hours?)?\s*?(?:(\d*?)\s*?minutes?)?\s*?(?:(\d*?)\s*?seconds?)?$/i;
 
 const timeArithmetic = {
   /**
@@ -17,7 +19,7 @@ const timeArithmetic = {
       hour: ((hour.hour + 11) % 12) + 1,
       minute: hour.minute,
       second: hour.second,
-      meridiem: hour.hour + 1 ? (hour.hour < 12 ? "am" : "pm") : NaN
+      meridiem: hour.hour + 1 ? (hour.hour < 12 ? "am" : "pm") : NaN,
     };
   },
 
@@ -35,11 +37,11 @@ const timeArithmetic = {
         : NaN,
       minute: hour.minute,
       second: hour.second,
-      meridiem: null
+      meridiem: null,
     };
   },
 
-  get24Hour: _24hour => {
+  get24Hour: (_24hour) => {
     /**
      * get obejct from 24-hour format.
      *
@@ -53,13 +55,13 @@ const timeArithmetic = {
           hour: NaN,
           minute: NaN,
           second: NaN,
-          meridiem: null
+          meridiem: null,
         };
       return {
         hour: parseInt(matches[1]) || 0,
         minute: parseInt(matches[2]) || 0,
         second: parseInt(matches[3]) || 0,
-        meridiem: null
+        meridiem: null,
       };
     }
     return (
@@ -71,7 +73,7 @@ const timeArithmetic = {
     );
   },
 
-  get12Hour: _12hour => {
+  get12Hour: (_12hour) => {
     /**
      * get obejct from 12-hour format.
      *
@@ -85,13 +87,13 @@ const timeArithmetic = {
           hour: NaN,
           minute: NaN,
           second: NaN,
-          meridiem: null
+          meridiem: null,
         };
       return {
         hour: parseInt(matches[1]) || 0,
         minute: parseInt(matches[2]) || 0,
         second: parseInt(matches[3]) || 0,
-        meridiem: (matches[4] || "").toLowerCase() || null
+        meridiem: (matches[4] || "").toLowerCase() || null,
       };
     }
     return (
@@ -105,7 +107,7 @@ const timeArithmetic = {
     );
   },
 
-  getHour: hour => {
+  getHour: (hour) => {
     /**
      * get obejct from hours minutes seconds format.
      *
@@ -124,21 +126,21 @@ const timeArithmetic = {
           hour: NaN,
           minute: NaN,
           second: NaN,
-          meridiem: null
+          meridiem: null,
         };
       else
         hour = {
           hour: parseInt(matches[1]) || 0,
           minute: parseInt(matches[2]) || 0,
           second: parseInt(matches[3]) || 0,
-          meridiem: (matches[4] || "").toLowerCase() || null
+          meridiem: (matches[4] || "").toLowerCase() || null,
         };
     }
     return {
       hour: hour.hour || 0,
       minute: hour.minute || 0,
       second: hour.second || 0,
-      meridiem: hour.meridiem || null
+      meridiem: hour.meridiem || null,
     };
   },
 
@@ -160,7 +162,7 @@ const timeArithmetic = {
       hour: Math.floor(_hours % 24),
       minute: _minutes,
       second: _seconds,
-      meridiem: null
+      meridiem: null,
     };
   },
 
@@ -208,7 +210,7 @@ const timeArithmetic = {
       hour: _hours,
       minute: _minutes,
       second: _seconds,
-      meridiem: null
+      meridiem: null,
     };
   },
 
@@ -244,9 +246,9 @@ const timeArithmetic = {
       gte: _hours1.hour >= _hours2.hour,
       lt: _hours1.hour < _hours2.hour,
       lte: _hours1.hour <= _hours2.hour,
-      ne: _hours1.hour != _hours2.hour
+      ne: _hours1.hour != _hours2.hour,
     };
-  }
+  },
 };
 
 module.exports = timeArithmetic;

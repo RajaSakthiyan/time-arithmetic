@@ -1,15 +1,15 @@
 {
-  "_from": "hour-arithmetic",
-  "_id": "hour-arithmetic@1.0.0",
+  "_from": "time-arithmetic",
+  "_id": "time-arithmetic@1.0.0",
   "_inBundle": false,
   "_integrity": "",
-  "_location": "/hour-arithmetic",
+  "_location": "/time-arithmetic",
   "_requested": {
     "type": "tag",
     "registry": true,
-    "raw": "hour-arithmetic",
-    "name": "hour-arithmetic",
-    "escapedName": "hour-arithmetic",
+    "raw": "time-arithmetic",
+    "name": "time-arithmetic",
+    "escapedName": "time-arithmetic",
     "rawSpec": "",
     "saveSpec": null,
     "fetchSpec": "latest"
@@ -18,23 +18,28 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/hour-arithmetic/-/hour-arithmetic-1.0.0.tgz",
+  "_resolved": "https://registry.npmjs.org/time-arithmetic/-/time-arithmetic-1.0.0.tgz",
   "_shasum": "",
-  "_spec": "hour-arithmetic",
+  "_spec": "time-arithmetic",
   "_where": "/home/rajasakthiyan.g",
   "author": {
     "name": "RajaSakthiyan.G"
   },
   "bugs": {
-    "url": "https://github.com/RajaSakthiyan/hour-arithmetic/issues"
+    "url": "https://github.com/RajaSakthiyan/time-arithmetic/issues"
   },
   "bundleDependencies": [],
   "deprecated": false,
   "description": "Utility library for doing arithmetic operation on of 12-hour and 24-hour format and conversion among these formats",
   "devDependencies": {
+    "eslint": "^8.43.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "2.8.8",
+    "prettier-eslint": "^15.0.1",
     "tape": "^4.9.1"
   },
-  "homepage": "https://github.com/RajaSakthiyan/hour-arithmetic",
+  "homepage": "https://github.com/RajaSakthiyan/time-arithmetic",
   "keywords": [
     "convert",
     "date",
@@ -48,12 +53,16 @@
   ],
   "license": "MIT",
   "main": "index.js",
-  "name": "hour-arithmetic",
+  "name": "time-arithmetic",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RajaSakthiyan/hour-arithmetic.git"
+    "url": "git+https://github.com/RajaSakthiyan/time-arithmetic.git"
   },
   "scripts": {
+    "prettier": "npx prettier --check *.js test/*.js",
+    "prettier:write": "npx prettier --write *.js test/*.js",
+    "eslint": "eslint index.js",
+    "eslint:fix": "eslint --fix index.js",
     "test": "tape test/*.js"
   },
   "version": "1.0.0"
