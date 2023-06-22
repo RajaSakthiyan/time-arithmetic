@@ -30,7 +30,7 @@
   },
   "bundleDependencies": [],
   "deprecated": false,
-  "description": "Utility library for doing arithmetic operation on of 12-hour and 24-hour format and conversion among these formats",
+  "description": "Utility library for doing arithmetic operation on of 12-hour and 24-hour value and conversion among these formats",
   "devDependencies": {
     "eslint": "^8.43.0",
     "eslint-config-prettier": "^8.8.0",
@@ -42,8 +42,6 @@
   "homepage": "https://github.com/RajaSakthiyan/time-arithmetic",
   "keywords": [
     "convert",
-    "date",
-    "datetime",
     "arithmetic",
     "format",
     "hour",
