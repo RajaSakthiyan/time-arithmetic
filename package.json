@@ -28,22 +28,21 @@
   "bugs": {
     "url": "https://github.com/RajaSakthiyan/time-arithmetic/issues"
   },
-  "bundleDependencies": [],
   "deprecated": false,
-  "description": "Utility library for doing arithmetic operation on of 12-hour and 24-hour format and conversion among these formats",
+  "description": "Utility library for doing arithmetic operation on of 12-hour and 24-hour value and conversion among these formats",
   "devDependencies": {
+    "coveralls": "^3.1.1",
     "eslint": "^8.43.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "istanbul": "^0.4.5",
     "prettier": "2.8.8",
     "prettier-eslint": "^15.0.1",
-    "tape": "^4.9.1"
+    "tape": "^5.6.3"
   },
   "homepage": "https://github.com/RajaSakthiyan/time-arithmetic",
   "keywords": [
     "convert",
-    "date",
-    "datetime",
     "arithmetic",
     "format",
     "hour",
@@ -63,7 +62,9 @@
     "prettier:write": "npx prettier --write *.js test/*.js",
     "eslint": "eslint index.js",
     "eslint:fix": "eslint --fix index.js",
-    "test": "tape test/*.js"
+    "test": "tape test/*.js",
+    "coverage": "istanbul cover test/*.js",
+    "coveralls": "npm run coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "version": "1.0.0"
 }
