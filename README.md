@@ -1,15 +1,15 @@
 # time-arithmetic
 
 
-[![npm version](npm-version-image)](npm-package-url) 
-[![Coverage Status](coverage-status-image)](coverage-status-url)
-[![Known Vulnerabilities](vulnerabilities-image)](vulnerabilities-url)
+[![npm version][npm-version-image]][npm-package-url] 
+[![Coverage Status][coverage-status-image]][coverage-status-url]
+[![Known Vulnerabilities][vulnerabilities-image]][vulnerabilities-url]
 [![Build][ci-status-image]][ci-status-url]
 [![License][license-image]][license-url]
 
 Utility library for doing arithmetic operation on 12-hour and 24-hour value and conversion among these formats
 
-[![npm badge][npm-badge-image]][package-url]
+[![npm badge][npm-badge-image]][npm-package-url]
 
 
 [npm-version-image]: https://badge.fury.io/js/time-arithmetic.svg
