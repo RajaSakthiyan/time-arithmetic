@@ -1,8 +1,7 @@
 "use strict";
 
 let tape = require("tape");
-let hour = require("..");
-
+let timeArithmetic = require("../index");
 tape("to12Hour", function (assert) {
   let testcases = [
     {
@@ -108,7 +107,7 @@ tape("to12Hour", function (assert) {
 
   testcases.forEach(function (each_case) {
     assert.deepEqual(
-      hour.to12Hour(each_case.input),
+      timeArithmetic.to12Hour(each_case.input),
       each_case.expected,
       ") should convert as 12-hour format"
     );
@@ -219,7 +218,7 @@ tape("get12Hour", function (assert) {
 
   testcases.forEach(function (each_case) {
     assert.deepEqual(
-      hour.get12Hour(each_case.input),
+      timeArithmetic.get12Hour(each_case.input),
       each_case.expected,
       ") should convert as readable 12-hour format"
     );
@@ -333,7 +332,7 @@ tape("to24Hour", function (assert) {
 
   testcases.forEach(function (each_case) {
     assert.deepEqual(
-      hour.to24Hour(each_case.input),
+      timeArithmetic.to24Hour(each_case.input),
       each_case.expected,
       ") should convert as 24-hour format"
     );
@@ -444,7 +443,7 @@ tape("get24Hour", function (assert) {
 
   testcases.forEach(function (each_case) {
     assert.deepEqual(
-      hour.get24Hour(each_case.input),
+      timeArithmetic.get24Hour(each_case.input),
       each_case.expected,
       ") should convert as readable 24-hour format"
     );
@@ -554,7 +553,7 @@ tape("getHour", function (assert) {
   ];
   testcases.forEach(function (each_case) {
     assert.deepEqual(
-      hour.getHour(each_case.input),
+      timeArithmetic.getHour(each_case.input),
       each_case.expected,
       ") should convert as object"
     );
@@ -564,42 +563,42 @@ tape("getHour", function (assert) {
 
 tape("compareHour", function (assert) {
   assert.deepEqual(
-    hour.compareHour("14:23:45", "2.23.45 PM").eq,
+    timeArithmetic.compareHour("14:23:45", "2.23.45 PM").eq,
     true,
     ") should equals hour"
   );
   assert.deepEqual(
-    hour.compareHour("12.23.45", "11.23.45").gt,
+    timeArithmetic.compareHour("12.23.45", "11.23.45").gt,
     true,
     ") should greater than hour"
   );
   assert.deepEqual(
-    hour.compareHour("11.23.45 ", "11.23.45").gte,
+    timeArithmetic.compareHour("11.23.45 ", "11.23.45").gte,
     true,
     ") should equal than  hour"
   );
   assert.deepEqual(
-    hour.compareHour("1:23:45 PM", "11.23.45 AM").gte,
+    timeArithmetic.compareHour("1:23:45 PM", "11.23.45 AM").gte,
     true,
     ") should greater hour"
   );
   assert.deepEqual(
-    hour.compareHour("11.23.45 AM", "13:23:45").lt,
+    timeArithmetic.compareHour("11.23.45 AM", "13:23:45").lt,
     true,
     ") should lesser than hour"
   );
   assert.deepEqual(
-    hour.compareHour("2:23:45 AM", "1:23:45 PM").lte,
+    timeArithmetic.compareHour("2:23:45 AM", "1:23:45 PM").lte,
     true,
     ") should lesser than  hour"
   );
   assert.deepEqual(
-    hour.compareHour("2:23:45 PM", "14:45:21").lte,
+    timeArithmetic.compareHour("2:23:45 PM", "14:45:21").lte,
     true,
     ") should equals hour"
   );
   assert.deepEqual(
-    hour.compareHour("2:23:45 PM", "2:23:45 AM").ne,
+    timeArithmetic.compareHour("2:23:45 PM", "2:23:45 AM").ne,
     true,
     ") should not equals hour"
   );
@@ -611,7 +610,7 @@ tape("compareHour", function (assert) {
 //   let testcases = [];
 //   testcases.forEach(function(each_case) {
 //     assert.deepEqual(
-//       hour.get12Hour(each_case.input),
+//       timeArithmetic.get12Hour(each_case.input),
 //       each_case.expected,
 //       ") should convert as readable 12-hour format"
 //     );

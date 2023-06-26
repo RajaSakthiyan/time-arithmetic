@@ -1,0 +1,27 @@
+name: Coveralls
+
+on: ["push"]
+
+jobs:
+  time-arithmetic:
+    name: coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+
+      - name: Setup Node.js 18.x
+        uses: actions/setup-node@master
+        with:
+          node-version: 18.x
+
+      - name: Build packages
+        run: npm run build
+
+      - name: Run Coverage
+        run: npm run coverage
+
+      - name: Upload to coveralls
+        uses: coverallsapp/github-action@v2.2.0 
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

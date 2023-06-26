@@ -36,10 +36,16 @@
     "eslint": "^8.43.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
     "istanbul": "^0.4.5",
     "prettier": "2.8.8",
     "prettier-eslint": "^15.0.1",
     "tape": "^5.6.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   },
   "homepage": "https://github.com/RajaSakthiyan/time-arithmetic",
   "keywords": [
