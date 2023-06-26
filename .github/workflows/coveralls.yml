@@ -15,6 +15,9 @@ jobs:
         with:
           node-version: 18.x
 
+      - name: Install Dependencies
+        use: npm install
+
       - name: Build packages
         run: npm run build
 
@@ -22,6 +25,6 @@ jobs:
         run: npm run coverage
 
       - name: Upload to coveralls
-        uses: coverallsapp/github-action@v2.2.0 
+        uses: coverallsapp/github-action@v2.2.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
