@@ -17,10 +17,7 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/time-arithmetic/-/time-arithmetic-1.0.1.tgz",
-  "_shasum": "",
   "_spec": "time-arithmetic",
-  "_where": "/home/rajasakthiyan.g",
   "author": {
     "name": "RajaSakthiyan.G"
   },
