@@ -1,6 +1,5 @@
 {
   "_from": "time-arithmetic",
-  "_id": "time-arithmetic@1.0.1",
   "_inBundle": false,
   "_integrity": "",
   "_location": "/time-arithmetic",
@@ -74,5 +73,5 @@
     "coveralls": "npm run coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "build": "esbuild index.js --bundle --outfile=lib/time-arithmetic.js"
   },
-  "version": "1.0.1"
+  "version": "1.0.2"
 }
