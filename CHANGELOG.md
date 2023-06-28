@@ -1,5 +1,11 @@
 # time-arithmetic
 
+## 1.0.8
+
+### Patch Changes
+
+- 226908e: Correction in env variable, CI changes only
+
 ## 1.0.7
 
 ### Patch Changes
