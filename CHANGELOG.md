@@ -1,5 +1,11 @@
 # time-arithmetic
 
+## 1.0.10
+
+### Patch Changes
+
+- 88bb1d4: CI changes: fixes release workflow
+
 ## 1.0.9
 
 ### Patch Changes
