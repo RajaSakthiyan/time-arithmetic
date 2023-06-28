@@ -1,6 +1,5 @@
 {
   "_from": "time-arithmetic",
-  "_id": "time-arithmetic@1.0.0",
   "_inBundle": false,
   "_integrity": "",
   "_location": "/time-arithmetic",
@@ -18,10 +17,7 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/time-arithmetic/-/time-arithmetic-1.0.0.tgz",
-  "_shasum": "",
   "_spec": "time-arithmetic",
-  "_where": "/home/rajasakthiyan.g",
   "author": {
     "name": "RajaSakthiyan.G"
   },
@@ -51,7 +47,7 @@
     "24"
   ],
   "license": "MIT",
-  "main": "index.js",
+  "main": "lib/time-arithmetic.js",
   "name": "time-arithmetic",
   "repository": {
     "type": "git",
@@ -66,5 +62,5 @@
     "coverage": "istanbul cover test/*.js",
     "coveralls": "npm run coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
-  "version": "1.0.0"
+  "version": "1.0.2"
 }
