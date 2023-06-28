@@ -58,7 +58,8 @@
     "url": "git+https://github.com/RajaSakthiyan/time-arithmetic.git"
   },
   "publishConfig": {
-    "provenance": true
+    "provenance": true,
+    "access": "public"
   },
   "scripts": {
     "prettier": "npx prettier --check *.js test/*.js",
