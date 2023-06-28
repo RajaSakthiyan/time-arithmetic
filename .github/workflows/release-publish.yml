@@ -28,8 +28,8 @@ jobs:
         id: changesets
         uses: changesets/action@master
         with:
-          publish: npm version
-          commit: New version to release
+          publish: npm publish
+          commit: Publish a new versions
           title: New release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
