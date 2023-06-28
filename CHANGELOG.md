@@ -1,5 +1,11 @@
 # time-arithmetic
 
+## 1.0.7
+
+### Patch Changes
+
+- e283b7b: Change in publsih command in Github Action workflow, CI change only
+
 ## 1.0.6
 
 ### Patch Changes
