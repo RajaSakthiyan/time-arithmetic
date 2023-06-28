@@ -1,5 +1,12 @@
 # time-arithmetic
 
+## 1.0.4
+
+### Patch Changes
+
+- a448243: Correction on Release/Publish Yaml workflow
+- a448243: New workflows for GitHub Actions
+
 ## 1.0.3
 
 ### Patch Changes
