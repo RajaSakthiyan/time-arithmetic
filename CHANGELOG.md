@@ -1,5 +1,11 @@
 # time-arithmetic
 
+## 1.0.9
+
+### Patch Changes
+
+- ed9dcb7: Change in CI trigger events
+
 ## 1.0.8
 
 ### Patch Changes
