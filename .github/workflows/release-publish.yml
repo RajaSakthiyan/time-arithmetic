@@ -24,9 +24,6 @@ jobs:
       - name: Install Dependencies
         run: npm ci --ignore-scripts
 
-      - name: Compress JS for browser
-        run: npm run build && pm run build-min
-
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@master
