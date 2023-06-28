@@ -28,7 +28,7 @@ jobs:
         id: changesets
         uses: changesets/action@master
         with:
-          publish: npm publish
+          publish: npm changeset publish
           commit: Publish a new versions
           title: New release
         env:
