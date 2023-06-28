@@ -1,5 +1,11 @@
 # time-arithmetic
 
+## 1.0.6
+
+### Patch Changes
+
+- 31e9281: Change in publish command
+
 ## 1.0.5
 
 ### Patch Changes
