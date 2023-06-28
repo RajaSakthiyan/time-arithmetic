@@ -1,5 +1,11 @@
 # time-arithmetic
 
+## 1.0.5
+
+### Patch Changes
+
+- e521843: CI changes: correction Github Action yaml
+
 ## 1.0.4
 
 ### Patch Changes
