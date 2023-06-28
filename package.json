@@ -63,5 +63,5 @@
     "coverage": "istanbul cover test/*.js",
     "coveralls": "npm run coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
-  "version": "1.0.7"
+  "version": "1.0.8"
 }
