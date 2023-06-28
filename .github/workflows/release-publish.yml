@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+    # paths:
+    #   - '**.js'
 
 jobs:
   release:
@@ -23,14 +25,16 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci --ignore-scripts
-
+      
+      - name: Run test before release
+        run: npm run test
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@master
         with:
           publish: npx changeset publish
-          commit: Publish a new versions
+          commit: Publish a new version
           title: New release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

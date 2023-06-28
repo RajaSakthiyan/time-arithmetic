@@ -2,7 +2,12 @@ name: Coveralls
 
 on:
   push:
-    branches: [master]
+    branches:
+      - 'master'
+    paths:
+      - '**.js'
+
+    
 
 jobs:
   time-arithmetic:
