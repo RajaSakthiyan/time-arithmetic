@@ -58,7 +58,6 @@
     "url": "git+https://github.com/RajaSakthiyan/time-arithmetic.git"
   },
   "publishConfig": {
-    "provenance": true,
     "access": "public"
   },
   "scripts": {
