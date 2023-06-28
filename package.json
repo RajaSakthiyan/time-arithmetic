@@ -48,8 +48,9 @@
     "24"
   ],
   "license": "MIT",
-  "main": "lib/time-arithmetic.js",
+  "main": "index.js",
   "name": "time-arithmetic",
+  "files": ["index.js"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RajaSakthiyan/time-arithmetic.git"
