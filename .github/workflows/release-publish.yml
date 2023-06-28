@@ -1,0 +1,39 @@
+name: Release and Publish
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    # It will create a PR 'Next release' once accepted, npm package will publish to npmjs registry
+    name: Release and Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js 18.x
+        uses: actions/setup-node@master
+        with:
+          node-version: 18.x
+
+      - name: Install Dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Compress JS for browser
+        run: npm run build && pm run build-min
+
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@master
+        with:
+          publish: npm version
+          commit: New version to release
+          title: New release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}

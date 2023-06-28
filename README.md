@@ -10,7 +10,7 @@
 
 Utility library for doing arithmetic operation on 12-hour and 24-hour value and conversion among these formats
 
-[![npm badge][npm-badge-image]][npm-package-url]
+[![link to npm package][npm-badge-image]][npm-package-url]
 
 
 [npm-version-image]: https://badge.fury.io/js/time-arithmetic.svg
