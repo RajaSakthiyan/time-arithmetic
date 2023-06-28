@@ -20,8 +20,8 @@ Utility library for doing arithmetic operation on 12-hour and 24-hour value and 
 [coverage-status-url]: https://coveralls.io/github/RajaSakthiyan/time-arithmetic
 [vulnerabilities-image]: https://snyk.io/test/github/RajaSakthiyan/time-arithmetic/badge.svg
 [vulnerabilities-url]: https://snyk.io/test/github/RajaSakthiyan/time-arithmetic
-[ci-status-image]: https://img.shields.io/badge/GitHub_Actions-ToDo-red
-[ci-status-url]: https://github.com/RajaSakthiyan/time-arithmetic/actions
+[ci-status-image]: https://github.com/RajaSakthiyan/time-arithmetic/actions/workflows/release-publish.yml/badge.svg
+[ci-status-url]: https://github.com/RajaSakthiyan/time-arithmetic/actions/workflows/release-publish.yml
 [install-size-image]: https://packagephobia.com/badge?p=time-arithmetic
 [install-size-url]:https://packagephobia.com/result?p=time-arithmetic
 [license-image]: https://img.shields.io/github/license/RajaSakthiyan/time-arithmetic

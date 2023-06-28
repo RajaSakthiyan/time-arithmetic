@@ -50,10 +50,15 @@
   "license": "MIT",
   "main": "index.js",
   "name": "time-arithmetic",
-  "files": ["index.js"],
+  "files": [
+    "index.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RajaSakthiyan/time-arithmetic.git"
+  },
+  "publishConfig": {
+    "provenance": true
   },
   "scripts": {
     "prettier": "npx prettier --check *.js test/*.js",
