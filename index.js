@@ -1,254 +1,248 @@
 "use strict";
 
-const Regex24Hour = /^(0?[1,2]?[0-9])\W*?([0-5]?[0-9])\W*?([0-5]?[0-9])?$/i;
-const Regex12Hour =
+const Regex24Time = /^(0?[1,2]?[0-9])\W*?([0-5]?[0-9])\W*?([0-5]?[0-9])?$/i;
+const Regex12Time =
   /^(0?[1-9]|1[0-2])\W*?([0-5]?[0-9])\W*?([0-5]?[0-9])?(?:\s*?|\W*?)([AP]M)$/i;
-const RegExHour =
+const RegExTime =
   /^(?:(\d*?)\s*?hours?)?\s*?(?:(\d*?)\s*?minutes?)?\s*?(?:(\d*?)\s*?seconds?)?$/i;
 
-const timeArithmetic = {
+/**
+ * Convert 24-hour format to 12-hour object.
+ *
+ * @param {(string|object)} time
+ * @param {string} time 24 hour formatted time in string
+ * @param {object} time { hour, minute, second, meridiem }
+ * @returns {object} { day, hour, minute, second, meridiem }
+ */
+const to12Hour = (time) => {
+  if (typeof time === "string") time = toObject(time);
+  const _12Hour = {
+    hour: ((time.hour + 11) % 12) + 1,
+    minute: time.minute,
+    second: time.second,
+    meridiem: null,
+  };
+  if (isNaN(time.hour)) _12Hour.meridiem = null;
+  else if (time.hour < 12) _12Hour.meridiem = "am";
+  else if (time.hour >= 12) _12Hour.meridiem = "pm";
+  if (time.day) _12Hour.day = time.day;
+  return _12Hour;
+};
+
+const to24Hour = (time) => {
   /**
-   * Convert 24-hour format to 12-hour object.
+   * Convert 12-hour format to 24-hour object.
    *
-   * @param {string} hour 24 hour format to convert
-   * @return {object} { hour, minute, second, meridiem }
+   * @param {string} time 12 hour format to convert
+   * @returns {object} { day, hour, minute, second, meridiem }
    */
-  to12Hour: function to12Hour(hour) {
-    if (typeof hour === "string") hour = timeArithmetic.get24Hour(hour);
-    return {
-      hour: ((hour.hour + 11) % 12) + 1,
-      minute: hour.minute,
-      second: hour.second,
-      meridiem: hour.hour + 1 ? (hour.hour < 12 ? "am" : "pm") : NaN,
-    };
-  },
+  if (typeof time === "string") time = toObject(time);
+  const _24Hour = {
+    hour: time.hour,
+    minute: time.minute,
+    second: time.second,
+    meridiem: null,
+  };
+  if (time.meridiem === "am") _24Hour.hour = time.hour % 12;
+  else if (time.meridiem === "pm") _24Hour.hour = 12 + (time.hour % 12);
+  if (time.day) _24Hour.day = time.day;
+  return _24Hour;
+};
 
-  to24Hour: function to24Hour(hour) {
-    /**
-     * Convert 12-hour format to 24-hour object.
-     *
-     * @param {string} hour 12 hour format to convert
-     * @return {object} { hour, minute, second }
-     */
-    if (typeof hour === "string") hour = timeArithmetic.get12Hour(hour);
-    return {
-      hour: hour.meridiem
-        ? (hour.meridiem.toLowerCase() === "am" ? 0 : 12) + (hour.hour % 12)
-        : NaN,
-      minute: hour.minute,
-      second: hour.second,
-      meridiem: null,
-    };
-  },
+const toObject = (time) => {
+  /**
+   * @param {string} time e.g. "01:03:03" or "01:03:03 am"
+   * @returns {object} { hour, minute, second, meridiem }
+   */
+  const toObj = {
+    hour: NaN,
+    minute: NaN,
+    second: NaN,
+    meridiem: null,
+  };
+  time = time.trim();
+  let matches =
+    time.match(RegExTime) ||
+    time.match(Regex12Time) ||
+    time.match(Regex24Time) ||
+    [];
+  if (matches.length) {
+    toObj.hour = parseInt(matches[1]) || 0;
+    toObj.minute = parseInt(matches[2]) || 0;
+    toObj.second = parseInt(matches[3]) || 0;
+    toObj.meridiem = (matches[4] || "").toLowerCase() || null;
+  }
+  return toObj;
+};
 
-  get24Hour: (_24hour) => {
-    /**
-     * get obejct from 24-hour format.
-     *
-     * @param {string} str 24 hour format
-     * @return {object} { hour, minute, second }
-     */
-    if (typeof _24hour === "string") {
-      let matches = _24hour.trim().match(Regex24Hour) || [];
-      if (!matches.length)
-        return {
-          hour: NaN,
-          minute: NaN,
-          second: NaN,
-          meridiem: null,
-        };
-      return {
-        hour: parseInt(matches[1]) || 0,
-        minute: parseInt(matches[2]) || 0,
-        second: parseInt(matches[3]) || 0,
-        meridiem: null,
-      };
-    }
-    return (
-      ("0" + String(_24hour.hour)).slice(-2, 3) +
-      ":" +
-      ("0" + String(_24hour.minute)).slice(-2, 3) +
-      ":" +
-      ("0" + String(_24hour.second)).slice(-2, 3)
-    );
-  },
+const toString = (time) => {
+  /**
+   * @param {object} time 24 hour object { hour, minute, second }
+   * @param {int} time.hour hour, value should be either in the range of 1 to 23
+   * @param {int} time.minute minute, value should be either in the range of 1 to 59
+   * @param {int} time.second second, value should be either in the range of 1 to 59
+   * @param {int} time.meridiem meridiem, value should be either 'am' or 'pm and null for 12-hour clock
+   * @returns {string} hour e.g. "01:03:03" or "01:03:03 am"
+   */
+  return `${("0" + String(time.hour)).slice(-2, 3)}:${(
+    "0" + String(time.minute)
+  ).slice(-2, 3)}:${("0" + String(time.second)).slice(-2, 3)}${
+    time.meridiem ?? null ? " " + time.meridiem : ""
+  }`;
+};
 
-  get12Hour: (_12hour) => {
-    /**
-     * get obejct from 12-hour format.
-     *
-     * @param {string} str 12 hour format
-     * @return {object} { hour, minute, second, meridiem }
-     */
-    if (typeof _12hour === "string") {
-      let matches = _12hour.trim().match(Regex12Hour) || [];
-      if (!matches.length)
-        return {
-          hour: NaN,
-          minute: NaN,
-          second: NaN,
-          meridiem: null,
-        };
-      return {
-        hour: parseInt(matches[1]) || 0,
-        minute: parseInt(matches[2]) || 0,
-        second: parseInt(matches[3]) || 0,
-        meridiem: (matches[4] || "").toLowerCase() || null,
-      };
-    }
-    return (
-      ("0" + String(_12hour.hour)).slice(-2, 3) +
-      ":" +
-      ("0" + String(_12hour.minute)).slice(-2, 3) +
-      ":" +
-      ("0" + String(_12hour.second)).slice(-2, 3) +
-      " " +
-      _12hour.meridiem
-    );
-  },
+const _add24Hours = (time1, time2) => {
+  /**
+   * @param {object} time1 24 hour object { day, hour, minute, second, meridiem }
+   * @param {int} time1.hour hour, value should be either in the range of 1 to 23
+   * @param {int} time1.minute minute, value should be either in the range of 1 to 59
+   * @param {int} time1.second second, value should be either in the range of 1 to 59
+   * @param {int} time1.meridiem meridiem, value should be either 'am' or 'pm and null for 12-hour clock
+   * @param {object} time2 24 hour object { day, hour, minute, second, meridiem }
+   * @param {int} time2.hour hour, value should be either in the range of 1 to 23
+   * @param {int} time2.minute minute, value should be either in the range of 1 to 59
+   * @param {int} time2.second second, value should be either in the range of 1 to 59
+   * @param {int} time2.meridiem meridiem, value should be either 'am' or 'pm and null for 12-hour clock
+   * @returns {object} hour object { day, hour, minute, second, meridiem }
+   */
+  let hours =
+    time1.hour + time2.hour + Math.floor((time1.minute + time2.minute) / 60);
+  let minutes = Math.floor(
+    (time1.minute +
+      time2.minute +
+      Math.floor((time1.second + time2.second) / 60)) %
+      60
+  );
+  let seconds = Math.floor((time1.second + time2.second) % 60);
+  return {
+    day: Math.floor(hours / 24),
+    hour: Math.floor(hours % 24),
+    minute: minutes,
+    second: seconds,
+    meridiem: null,
+  };
+};
 
-  getHour: (hour) => {
-    /**
-     * get obejct from hours minutes seconds format.
-     *
-     * @param {string} str hours minutes seconds format
-     * @return {object} { hour, minute, second}
-     */
-    if (typeof hour === "string") {
-      hour = hour.trim();
-      let matches =
-        hour.match(RegExHour) ||
-        hour.match(Regex12Hour) ||
-        hour.match(Regex24Hour) ||
-        [];
-      if (!matches.length)
-        hour = {
-          hour: NaN,
-          minute: NaN,
-          second: NaN,
-          meridiem: null,
-        };
-      else
-        hour = {
-          hour: parseInt(matches[1]) || 0,
-          minute: parseInt(matches[2]) || 0,
-          second: parseInt(matches[3]) || 0,
-          meridiem: (matches[4] || "").toLowerCase() || null,
-        };
-    }
-    return {
-      hour: hour.hour || 0,
-      minute: hour.minute || 0,
-      second: hour.second || 0,
-      meridiem: hour.meridiem || null,
-    };
-  },
+const add = (time1, time2) => {
+  /**
+   * @param {(string|object)} time1 24 hour object { day, hour, minute, second, meridiem }
+   * @param {string} time1 e.g. "01:03:03" or "01:03:03 am"
+   * @param {int} time1.hour hour, value should be either in the range of 1 to 23
+   * @param {int} time1.minute minute, value should be either in the range of 1 to 59
+   * @param {int} time1.second second, value should be either in the range of 1 to 59
+   * @param {int} time1.meridiem meridiem, value should be either 'am' or 'pm and null for 12-hour clock
+   * @param {(string|object)} time2 24 hour object { day, hour, minute, second, meridiem }
+   * @param {string} time1 e.g. "01:03:03" or "01:03:03 am"
+   * @param {int} time2.hour hour, value should be either in the range of 1 to 23
+   * @param {int} time2.minute minute, value should be either in the range of 1 to 59
+   * @param {int} time2.second second, value should be either in the range of 1 to 59
+   * @param {int} time2.meridiem meridiem, value should be either 'am' or 'pm and null for 12-hour clock
+   * @returns {object} hour object { day, hour, minute, second, meridiem }
+   */
+  let hours = (time1 = typeof time1 == "string" ? toObject(time1) : time1);
+  time2 = typeof time2 == "string" ? toObject(time2) : time2;
+  time1 = time1.meridiem ? to24Hour(time1) : time1;
+  time2 = time2.meridiem ? to24Hour(time2) : time2;
+  return _add24Hours(time1, time2);
+};
 
-  _add24Hour: (_24hour, hour) => {
-    hour = hour.meridiem ? timeArithmetic.to24Hour(hour) : hour;
-    let _hours =
-      _24hour.hour +
-      hour.hour +
-      Math.floor((_24hour.minute + hour.minute) / 60);
-    let _minutes = Math.floor(
-      (_24hour.minute +
-        hour.minute +
-        Math.floor((_24hour.second + hour.second) / 60)) %
-        60
-    );
-    let _seconds = Math.floor((_24hour.second + hour.second) % 60);
-    return {
-      day: Math.floor(_hours / 24),
-      hour: Math.floor(_hours % 24),
-      minute: _minutes,
-      second: _seconds,
-      meridiem: null,
-    };
-  },
+const _diff24Hours = (time1, time2) => {
+  /**
+   * @param {object} time1 24 hour object { day, hour, minute, second, meridiem }
+   * @param {int} time1.hour hour, value should be either in the range of 1 to 23
+   * @param {int} time1.minute minute, value should be either in the range of 1 to 59
+   * @param {int} time1.second second, value should be either in the range of 1 to 59
+   * @param {int} time1.meridiem meridiem, value should be either 'am' or 'pm and null for 12-hour clock
+   * @param {object} time2 24 hour object { day, hour, minute, second, meridiem }
+   * @param {int} time2.hour hour, value should be either in the range of 1 to 23
+   * @param {int} time2.minute minute, value should be either in the range of 1 to 59
+   * @param {int} time2.second second, value should be either in the range of 1 to 59
+   * @param {int} time2.meridiem meridiem, value should be either 'am' or 'pm and null for 12-hour clock
+   * @returns {object} hour object { day, hour, minute, second, meridiem }
+   */
+  let hours = 0;
+  let minutes = 0;
+  let seconds = time1.second - time2.second;
+  if (seconds < 0) {
+    seconds += 60;
+    minutes = -1;
+  }
+  minutes += time1.minute - time2.minute;
+  if (minutes < 0) {
+    minutes += 60;
+    hours = -1;
+  }
+  hours += time1.hour - time2.hour;
+  if (hours < 0) hours += 24;
+  return {
+    hour: hours,
+    minute: minutes,
+    second: seconds,
+    meridiem: null,
+  };
+};
 
-  _add12Hour: (_12hour, hour) => {
-    let _24hour = timeArithmetic.to24Hour(_12hour);
-    if (_24hour) {
-      _24hour = timeArithmetic._add24Hour(_24hour, hour);
-      let _12hour = timeArithmetic.to12Hour(_24hour);
-      _12hour.day = _24hour.day;
-      return _12hour;
-    }
-    return null;
-  },
+const diff = (time1, time2) => {
+  /**
+   * @param {(string|object)} time1 24 hour object { day, hour, minute, second, meridiem }
+   * @param {string} time1 e.g. "01:03:03" or "01:03:03 am"
+   * @param {int} time1.hour hour, value should be either in the range of 1 to 23
+   * @param {int} time1.minute minute, value should be either in the range of 1 to 59
+   * @param {int} time1.second second, value should be either in the range of 1 to 59
+   * @param {int} time1.meridiem meridiem, value should be either 'am' or 'pm and null for 12-hour clock
+   * @param {(string|object)} time2 24 hour object { day, hour, minute, second, meridiem }
+   * @param {string} time1 e.g. "01:03:03" or "01:03:03 am"
+   * @param {int} time2.hour hour, value should be either in the range of 1 to 23
+   * @param {int} time2.minute minute, value should be either in the range of 1 to 59
+   * @param {int} time2.second second, value should be either in the range of 1 to 59
+   * @param {int} time2.meridiem meridiem, value should be either 'am' or 'pm and null for 12-hour clock
+   * @returns {object} hour object { hour, minute, second, meridiem }
+   */
+  time1 = typeof time1 == "string" ? toObject(time1) : time1;
+  time2 = typeof time2 == "string" ? toObject(time2) : time2;
+  time1 = time1.meridiem ? to24Hour(time1) : time1;
+  time2 = time2.meridiem ? to24Hour(time2) : time2;
+  return _diff24Hours(time1, time2);
+};
 
-  addHour: (_hour, hour) => {
-    if (Regex24Hour.test(_hour))
-      return timeArithmetic._add24Hour(
-        timeArithmetic.get24Hour(_hour),
-        timeArithmetic.getHour(hour)
-      );
-    else if (Regex12Hour.test(_hour))
-      return timeArithmetic._add12Hour(
-        timeArithmetic.get12Hour(_hour),
-        timeArithmetic.getHour(hour)
-      );
-    else return null;
-  },
+const compare = (time1, time2) => {
+  /**
+   * @param {(string|object)} time1 24 hour object { day, hour, minute, second, meridiem }
+   * @param {string} time1 e.g. "01:03:03" or "01:03:03 am"
+   * @param {int} time1.hour hour, value should be either in the range of 1 to 23
+   * @param {int} time1.minute minute, value should be either in the range of 1 to 59
+   * @param {int} time1.second second, value should be either in the range of 1 to 59
+   * @param {int} time1.meridiem meridiem, value should be either 'am' or 'pm and null for 12-hour clock
+   * @param {(string|object)} time2 24 hour object { day, hour, minute, second, meridiem }
+   * @param {string} time1 e.g. "01:03:03" or "01:03:03 am"
+   * @param {int} time2.hour hour, value should be either in the range of 1 to 23
+   * @param {int} time2.minute minute, value should be either in the range of 1 to 59
+   * @param {int} time2.second second, value should be either in the range of 1 to 59
+   * @param {int} time2.meridiem meridiem, value should be either 'am' or 'pm and null for 12-hour clock
+   * @returns {object} object { eq, gt, gte, lt, lte, ne }
+   */
+  time1 = typeof time1 == "string" ? toObject(time1) : time1;
+  time2 = typeof time2 == "string" ? toObject(time2) : time2;
+  time1 = time1.meridiem ? to24Hour(time1) : time1;
+  time2 = time2.meridiem ? to24Hour(time2) : time2;
+  return {
+    eq: time1.hour == time2.hour,
+    gt: time1.hour > time2.hour,
+    gte: time1.hour >= time2.hour,
+    lt: time1.hour < time2.hour,
+    lte: time1.hour <= time2.hour,
+    ne: time1.hour != time2.hour,
+  };
+};
 
-  _diff24Hour: (_24hour, hour) => {
-    let _hours = 0;
-    let _minutes = 0;
-    let _seconds = _24hour.second - hour.second;
-    if (_seconds < 0) {
-      _seconds += 60;
-      _minutes = -1;
-    }
-    _minutes += _24hour.minute - hour.minute;
-    if (_minutes < 0) {
-      _minutes += 60;
-      _hours = -1;
-    }
-    _hours += _24hour.hour - hour.hour;
-    if (_hours < 0) _hours += 24;
-    return {
-      hour: _hours,
-      minute: _minutes,
-      second: _seconds,
-      meridiem: null,
-    };
-  },
-
-  _diff12Hour: (_12hour, hour) => {
-    let _24hour = timeArithmetic.to24Hour(_12hour);
-    let _dif24 = timeArithmetic._diff24Hour(_24hour, hour);
-    if (_24hour) return timeArithmetic.to12Hour(_dif24);
-    return null;
-  },
-
-  diffHour: (_hour, hour) => {
-    if (Regex24Hour.test(_hour))
-      return timeArithmetic._diff24Hour(
-        timeArithmetic.get24Hour(_hour),
-        timeArithmetic.getHour(hour)
-      );
-    else if (Regex12Hour.test(_hour))
-      return timeArithmetic._diff12Hour(
-        timeArithmetic.get12Hour(_hour),
-        timeArithmetic.getHour(hour)
-      );
-    else return null;
-  },
-
-  compareHour: (hours1, hours2) => {
-    let _hours1 = timeArithmetic.getHour(hours1);
-    let _hours2 = timeArithmetic.getHour(hours2);
-    _hours1 = _hours1.meridiem ? timeArithmetic.to24Hour(_hours1) : _hours1;
-    _hours2 = _hours2.meridiem ? timeArithmetic.to24Hour(_hours2) : _hours2;
-    return {
-      eq: _hours1.hour == _hours2.hour,
-      gt: _hours1.hour > _hours2.hour,
-      gte: _hours1.hour >= _hours2.hour,
-      lt: _hours1.hour < _hours2.hour,
-      lte: _hours1.hour <= _hours2.hour,
-      ne: _hours1.hour != _hours2.hour,
-    };
-  },
+const timeArithmetic = {
+  to12Hour,
+  to24Hour,
+  toObject,
+  toString,
+  add,
+  diff,
+  compare,
 };
 
 module.exports = timeArithmetic;

@@ -2,6 +2,7 @@
 
 let tape = require("tape");
 let timeArithmetic = require("../index");
+
 tape("to12Hour", function (assert) {
   let testcases = [
     {
@@ -103,6 +104,14 @@ tape("to12Hour", function (assert) {
       input: { hour: 23, minute: 58, second: 58 },
       expected: { hour: 11, minute: 58, second: 58, meridiem: "pm" },
     },
+    {
+      input: { hour: 0, minute: 58, second: 58 },
+      expected: { hour: 12, minute: 58, second: 58, meridiem: "am" },
+    },
+    {
+      input: { hour: 1, minute: 58, second: 58 },
+      expected: { hour: 1, minute: 58, second: 58, meridiem: "am" },
+    },
   ];
 
   testcases.forEach(function (each_case) {
@@ -110,117 +119,6 @@ tape("to12Hour", function (assert) {
       timeArithmetic.to12Hour(each_case.input),
       each_case.expected,
       ") should convert as 12-hour format"
-    );
-  });
-
-  assert.end();
-});
-
-tape("get12Hour", function (assert) {
-  let testcases = [
-    {
-      input: { hour: 12, minute: 0, second: 0, meridiem: "am" },
-      expected: "12:00:00 am",
-    },
-    {
-      input: { hour: 1, minute: 3, second: 3, meridiem: "am" },
-      expected: "01:03:03 am",
-    },
-    {
-      input: { hour: 2, minute: 5, second: 5, meridiem: "am" },
-      expected: "02:05:05 am",
-    },
-    {
-      input: { hour: 3, minute: 8, second: 8, meridiem: "am" },
-      expected: "03:08:08 am",
-    },
-    {
-      input: { hour: 4, minute: 10, second: 10, meridiem: "am" },
-      expected: "04:10:10 am",
-    },
-    {
-      input: { hour: 5, minute: 13, second: 13, meridiem: "am" },
-      expected: "05:13:13 am",
-    },
-    {
-      input: { hour: 6, minute: 15, second: 15, meridiem: "am" },
-      expected: "06:15:15 am",
-    },
-    {
-      input: { hour: 7, minute: 18, second: 18, meridiem: "am" },
-      expected: "07:18:18 am",
-    },
-    {
-      input: { hour: 8, minute: 20, second: 20, meridiem: "am" },
-      expected: "08:20:20 am",
-    },
-    {
-      input: { hour: 9, minute: 23, second: 23, meridiem: "am" },
-      expected: "09:23:23 am",
-    },
-    {
-      input: { hour: 10, minute: 25, second: 25, meridiem: "am" },
-      expected: "10:25:25 am",
-    },
-    {
-      input: { hour: 11, minute: 28, second: 28, meridiem: "am" },
-      expected: "11:28:28 am",
-    },
-    {
-      input: { hour: 0, minute: 30, second: 30, meridiem: "pm" },
-      expected: "00:30:30 pm",
-    },
-    {
-      input: { hour: 1, minute: 33, second: 33, meridiem: "pm" },
-      expected: "01:33:33 pm",
-    },
-    {
-      input: { hour: 2, minute: 35, second: 35, meridiem: "pm" },
-      expected: "02:35:35 pm",
-    },
-    {
-      input: { hour: 3, minute: 38, second: 38, meridiem: "pm" },
-      expected: "03:38:38 pm",
-    },
-    {
-      input: { hour: 4, minute: 40, second: 40, meridiem: "pm" },
-      expected: "04:40:40 pm",
-    },
-    {
-      input: { hour: 5, minute: 43, second: 43, meridiem: "pm" },
-      expected: "05:43:43 pm",
-    },
-    {
-      input: { hour: 6, minute: 45, second: 45, meridiem: "pm" },
-      expected: "06:45:45 pm",
-    },
-    {
-      input: { hour: 7, minute: 48, second: 48, meridiem: "pm" },
-      expected: "07:48:48 pm",
-    },
-    {
-      input: { hour: 8, minute: 50, second: 50, meridiem: "pm" },
-      expected: "08:50:50 pm",
-    },
-    {
-      input: { hour: 9, minute: 53, second: 53, meridiem: "pm" },
-      expected: "09:53:53 pm",
-    },
-    {
-      input: { hour: 10, minute: 55, second: 55, meridiem: "pm" },
-      expected: "10:55:55 pm",
-    },
-    {
-      input: { hour: 11, minute: 58, second: 58, meridiem: "pm" },
-      expected: "11:58:58 pm",
-    },
-  ];
-
-  testcases.forEach(function (each_case) {
-    assert.deepEqual(
-      timeArithmetic.get12Hour(each_case.input),
-      each_case.expected,
-      ") should convert as readable 12-hour format"
     );
   });
 
@@ -328,6 +226,14 @@ tape("to24Hour", function (assert) {
       input: { hour: 11, minute: 58, second: 58, meridiem: "pm" },
       expected: { hour: 23, minute: 58, second: 58, meridiem: null },
     },
+    {
+      input: { hour: 12, minute: 55, second: 55, meridiem: "am" },
+      expected: { hour: 0, minute: 55, second: 55, meridiem: null },
+    },
+    {
+      input: { hour: 1, minute: 58, second: 58, meridiem: "am" },
+      expected: { hour: 1, minute: 58, second: 58, meridiem: null },
+    },
   ];
 
   testcases.forEach(function (each_case) {
@@ -341,7 +247,7 @@ tape("to24Hour", function (assert) {
   assert.end();
 });
 
-tape("get24Hour", function (assert) {
+tape("toString, 24-hour clock", function (assert) {
   let testcases = [
     {
       input: { hour: 12, minute: 0, second: 0, meridiem: null },
@@ -443,16 +349,127 @@ tape("get24Hour", function (assert) {
 
   testcases.forEach(function (each_case) {
     assert.deepEqual(
-      timeArithmetic.get24Hour(each_case.input),
+      timeArithmetic.toString(each_case.input),
       each_case.expected,
-      ") should convert as readable 24-hour format"
+      ") should convert to string (24-hour clock)"
     );
   });
 
   assert.end();
 });
 
-tape("getHour", function (assert) {
+tape("toString, 12-hour clock", function (assert) {
+  let testcases = [
+    {
+      input: { hour: 12, minute: 0, second: 0, meridiem: "am" },
+      expected: "12:00:00 am",
+    },
+    {
+      input: { hour: 1, minute: 3, second: 3, meridiem: "am" },
+      expected: "01:03:03 am",
+    },
+    {
+      input: { hour: 2, minute: 5, second: 5, meridiem: "am" },
+      expected: "02:05:05 am",
+    },
+    {
+      input: { hour: 3, minute: 8, second: 8, meridiem: "am" },
+      expected: "03:08:08 am",
+    },
+    {
+      input: { hour: 4, minute: 10, second: 10, meridiem: "am" },
+      expected: "04:10:10 am",
+    },
+    {
+      input: { hour: 5, minute: 13, second: 13, meridiem: "am" },
+      expected: "05:13:13 am",
+    },
+    {
+      input: { hour: 6, minute: 15, second: 15, meridiem: "am" },
+      expected: "06:15:15 am",
+    },
+    {
+      input: { hour: 7, minute: 18, second: 18, meridiem: "am" },
+      expected: "07:18:18 am",
+    },
+    {
+      input: { hour: 8, minute: 20, second: 20, meridiem: "am" },
+      expected: "08:20:20 am",
+    },
+    {
+      input: { hour: 9, minute: 23, second: 23, meridiem: "am" },
+      expected: "09:23:23 am",
+    },
+    {
+      input: { hour: 10, minute: 25, second: 25, meridiem: "am" },
+      expected: "10:25:25 am",
+    },
+    {
+      input: { hour: 11, minute: 28, second: 28, meridiem: "am" },
+      expected: "11:28:28 am",
+    },
+    {
+      input: { hour: 0, minute: 30, second: 30, meridiem: "pm" },
+      expected: "00:30:30 pm",
+    },
+    {
+      input: { hour: 1, minute: 33, second: 33, meridiem: "pm" },
+      expected: "01:33:33 pm",
+    },
+    {
+      input: { hour: 2, minute: 35, second: 35, meridiem: "pm" },
+      expected: "02:35:35 pm",
+    },
+    {
+      input: { hour: 3, minute: 38, second: 38, meridiem: "pm" },
+      expected: "03:38:38 pm",
+    },
+    {
+      input: { hour: 4, minute: 40, second: 40, meridiem: "pm" },
+      expected: "04:40:40 pm",
+    },
+    {
+      input: { hour: 5, minute: 43, second: 43, meridiem: "pm" },
+      expected: "05:43:43 pm",
+    },
+    {
+      input: { hour: 6, minute: 45, second: 45, meridiem: "pm" },
+      expected: "06:45:45 pm",
+    },
+    {
+      input: { hour: 7, minute: 48, second: 48, meridiem: "pm" },
+      expected: "07:48:48 pm",
+    },
+    {
+      input: { hour: 8, minute: 50, second: 50, meridiem: "pm" },
+      expected: "08:50:50 pm",
+    },
+    {
+      input: { hour: 9, minute: 53, second: 53, meridiem: "pm" },
+      expected: "09:53:53 pm",
+    },
+    {
+      input: { hour: 10, minute: 55, second: 55, meridiem: "pm" },
+      expected: "10:55:55 pm",
+    },
+    {
+      input: { hour: 11, minute: 58, second: 58, meridiem: "pm" },
+      expected: "11:58:58 pm",
+    },
+  ];
+
+  testcases.forEach(function (each_case) {
+    assert.deepEqual(
+      timeArithmetic.toString(each_case.input),
+      each_case.expected,
+      ") should convert to string (12-hour clock)"
+    );
+  });
+
+  assert.end();
+});
+
+tape("toObject", function (assert) {
   let testcases = [
     {
       input: "0 hours 0 minutes 0 seconds",
@@ -553,7 +570,7 @@ tape("getHour", function (assert) {
   ];
   testcases.forEach(function (each_case) {
     assert.deepEqual(
-      timeArithmetic.getHour(each_case.input),
+      timeArithmetic.toObject(each_case.input),
       each_case.expected,
       ") should convert as object"
     );
@@ -561,44 +578,44 @@ tape("getHour", function (assert) {
   assert.end();
 });
 
-tape("compareHour", function (assert) {
+tape("compare", function (assert) {
   assert.deepEqual(
-    timeArithmetic.compareHour("14:23:45", "2.23.45 PM").eq,
+    timeArithmetic.compare("14:23:45", "2.23.45 PM").eq,
     true,
     ") should equals hour"
   );
   assert.deepEqual(
-    timeArithmetic.compareHour("12.23.45", "11.23.45").gt,
+    timeArithmetic.compare("12.23.45", "11.23.45").gt,
     true,
     ") should greater than hour"
   );
   assert.deepEqual(
-    timeArithmetic.compareHour("11.23.45 ", "11.23.45").gte,
+    timeArithmetic.compare("11.23.45 ", "11.23.45").gte,
     true,
-    ") should equal than  hour"
+    ") should equals  hour"
   );
   assert.deepEqual(
-    timeArithmetic.compareHour("1:23:45 PM", "11.23.45 AM").gte,
+    timeArithmetic.compare("1:23:45 PM", "11.23.45 AM").gte,
     true,
     ") should greater hour"
   );
   assert.deepEqual(
-    timeArithmetic.compareHour("11.23.45 AM", "13:23:45").lt,
+    timeArithmetic.compare("11.23.45 AM", "13:23:45").lt,
     true,
     ") should lesser than hour"
   );
   assert.deepEqual(
-    timeArithmetic.compareHour("2:23:45 AM", "1:23:45 PM").lte,
+    timeArithmetic.compare("2:23:45 AM", "1:23:45 PM").lte,
     true,
     ") should lesser than  hour"
   );
   assert.deepEqual(
-    timeArithmetic.compareHour("2:23:45 PM", "14:45:21").lte,
+    timeArithmetic.compare("2:23:45 PM", "14:45:21").lte,
     true,
     ") should equals hour"
   );
   assert.deepEqual(
-    timeArithmetic.compareHour("2:23:45 PM", "2:23:45 AM").ne,
+    timeArithmetic.compare("2:23:45 PM", "2:23:45 AM").ne,
     true,
     ") should not equals hour"
   );
