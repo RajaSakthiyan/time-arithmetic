@@ -7,11 +7,15 @@ const RegExTime =
   /^(?:(\d*?)\s*?hours?)?\s*?(?:(\d*?)\s*?minutes?)?\s*?(?:(\d*?)\s*?seconds?)?$/i;
 
 /**
- * Convert 24-hour format to 12-hour object.
+ * Convert 24-hour string/object to 12-hour object.
  *
- * @param {(string|object)} time
- * @param {string} time 24 hour formatted time in string
- * @param {object} time { hour, minute, second, meridiem }
+ * @param {(string|object)} time 24-hour time
+ * @param {string} time 24-hour formatted time in string
+ * @param {object} time 24-hour object { hour, minute, second, meridiem }
+ * @param {int} time.hour hour, value should be either in the range of 1 to 23
+ * @param {int} time.minute minute, value should be either in the range of 1 to 59
+ * @param {int} time.second second, value should be either in the range of 1 to 59
+ * @param {int} time.meridiem meridiem, value is null
  * @returns {object} { day, hour, minute, second, meridiem }
  */
 const to12Hour = (time) => {
@@ -22,18 +26,24 @@ const to12Hour = (time) => {
     second: time.second,
     meridiem: null,
   };
-  if (isNaN(time.hour)) _12Hour.meridiem = null;
-  else if (time.hour < 12) _12Hour.meridiem = "am";
+  if (time.hour < 12) _12Hour.meridiem = "am";
   else if (time.hour >= 12) _12Hour.meridiem = "pm";
+  else _12Hour.meridiem = null;
   if (time.day) _12Hour.day = time.day;
   return _12Hour;
 };
 
 const to24Hour = (time) => {
   /**
-   * Convert 12-hour format to 24-hour object.
+   * Convert 12-hour string/object to 24-hour object.
    *
-   * @param {string} time 12 hour format to convert
+   * @param {(string|object)} time 12-hour time to convert
+   * @param {string} time 12-hour formatted time in string
+   * @param {object} time 12-hour object { hour, minute, second, meridiem }
+   * @param {int} time.hour hour, value should be either in the range of 1 to 23
+   * @param {int} time.minute minute, value should be either in the range of 1 to 59
+   * @param {int} time.second second, value should be either in the range of 1 to 59
+   * @param {int} time.meridiem meridiem, value should be either 'am' or 'pm'
    * @returns {object} { day, hour, minute, second, meridiem }
    */
   if (typeof time === "string") time = toObject(time);
@@ -51,6 +61,8 @@ const to24Hour = (time) => {
 
 const toObject = (time) => {
   /**
+   * Convert time string to object
+   * 
    * @param {string} time e.g. "01:03:03" or "01:03:03 am"
    * @returns {object} { hour, minute, second, meridiem }
    */
@@ -77,12 +89,14 @@ const toObject = (time) => {
 
 const toString = (time) => {
   /**
-   * @param {object} time 24 hour object { hour, minute, second }
+   * Convert time object to string e.g. "01:03:03" or "01:03:03 am"
+   * 
+   * @param {object} time 24-hour or 12-hour object
    * @param {int} time.hour hour, value should be either in the range of 1 to 23
    * @param {int} time.minute minute, value should be either in the range of 1 to 59
    * @param {int} time.second second, value should be either in the range of 1 to 59
-   * @param {int} time.meridiem meridiem, value should be either 'am' or 'pm and null for 12-hour clock
-   * @returns {string} hour e.g. "01:03:03" or "01:03:03 am"
+   * @param {int} time.meridiem meridiem, value should be either 'am' or 'pm' and null for 24-hour clock
+   * @returns {string} time
    */
   return `${("0" + String(time.hour)).slice(-2, 3)}:${(
     "0" + String(time.minute)
@@ -93,12 +107,15 @@ const toString = (time) => {
 
 const _add24Hours = (time1, time2) => {
   /**
-   * @param {object} time1 24 hour object { day, hour, minute, second, meridiem }
+   * It takes two arguments in 24-hour object and perform the addition to them.
+   * day is represent integer when hour is more 24 while performing addition. 
+   * 
+   * @param {object} time1 24-hour object { hour, minute, second, meridiem }
    * @param {int} time1.hour hour, value should be either in the range of 1 to 23
    * @param {int} time1.minute minute, value should be either in the range of 1 to 59
    * @param {int} time1.second second, value should be either in the range of 1 to 59
    * @param {int} time1.meridiem meridiem, value should be either 'am' or 'pm and null for 12-hour clock
-   * @param {object} time2 24 hour object { day, hour, minute, second, meridiem }
+   * @param {object} time2 24-hour object { hour, minute, second, meridiem }
    * @param {int} time2.hour hour, value should be either in the range of 1 to 23
    * @param {int} time2.minute minute, value should be either in the range of 1 to 59
    * @param {int} time2.second second, value should be either in the range of 1 to 59
@@ -125,13 +142,16 @@ const _add24Hours = (time1, time2) => {
 
 const add = (time1, time2) => {
   /**
-   * @param {(string|object)} time1 24 hour object { day, hour, minute, second, meridiem }
+   * It takes two arguments in 24-hour or 12-hour time either string or object and perform addition to them
+   * day is represent integer when hour is more 24 while performing addition. 
+   * 
+   * @param {(string|object)} time1 24-hour or 12-hour object/string
    * @param {string} time1 e.g. "01:03:03" or "01:03:03 am"
    * @param {int} time1.hour hour, value should be either in the range of 1 to 23
    * @param {int} time1.minute minute, value should be either in the range of 1 to 59
    * @param {int} time1.second second, value should be either in the range of 1 to 59
    * @param {int} time1.meridiem meridiem, value should be either 'am' or 'pm and null for 12-hour clock
-   * @param {(string|object)} time2 24 hour object { day, hour, minute, second, meridiem }
+   * @param {(string|object)} time2 24-hour or 12-hour object or string
    * @param {string} time1 e.g. "01:03:03" or "01:03:03 am"
    * @param {int} time2.hour hour, value should be either in the range of 1 to 23
    * @param {int} time2.minute minute, value should be either in the range of 1 to 59
@@ -139,7 +159,7 @@ const add = (time1, time2) => {
    * @param {int} time2.meridiem meridiem, value should be either 'am' or 'pm and null for 12-hour clock
    * @returns {object} hour object { day, hour, minute, second, meridiem }
    */
-  let hours = (time1 = typeof time1 == "string" ? toObject(time1) : time1);
+  time1 = typeof time1 == "string" ? toObject(time1) : time1;
   time2 = typeof time2 == "string" ? toObject(time2) : time2;
   time1 = time1.meridiem ? to24Hour(time1) : time1;
   time2 = time2.meridiem ? to24Hour(time2) : time2;
@@ -148,6 +168,8 @@ const add = (time1, time2) => {
 
 const _diff24Hours = (time1, time2) => {
   /**
+   * It takes two arguments in 24-hour object and perform the substraction to them.
+   * 
    * @param {object} time1 24 hour object { day, hour, minute, second, meridiem }
    * @param {int} time1.hour hour, value should be either in the range of 1 to 23
    * @param {int} time1.minute minute, value should be either in the range of 1 to 59
@@ -184,13 +206,15 @@ const _diff24Hours = (time1, time2) => {
 
 const diff = (time1, time2) => {
   /**
-   * @param {(string|object)} time1 24 hour object { day, hour, minute, second, meridiem }
+   * It takes two arguments in 24-hour or 12-hour time either string or object and perform substraction to them.
+   * 
+   * @param {(string|object)} time1 24-hour or 12-hour object/string
    * @param {string} time1 e.g. "01:03:03" or "01:03:03 am"
    * @param {int} time1.hour hour, value should be either in the range of 1 to 23
    * @param {int} time1.minute minute, value should be either in the range of 1 to 59
    * @param {int} time1.second second, value should be either in the range of 1 to 59
    * @param {int} time1.meridiem meridiem, value should be either 'am' or 'pm and null for 12-hour clock
-   * @param {(string|object)} time2 24 hour object { day, hour, minute, second, meridiem }
+   * @param {(string|object)} time2 24-hour or 12-hour object/string
    * @param {string} time1 e.g. "01:03:03" or "01:03:03 am"
    * @param {int} time2.hour hour, value should be either in the range of 1 to 23
    * @param {int} time2.minute minute, value should be either in the range of 1 to 59
@@ -207,6 +231,15 @@ const diff = (time1, time2) => {
 
 const compare = (time1, time2) => {
   /**
+   * It takes two arguments in 24-hour or 12-hour time either string or object and perform comparison to them.
+   * It return object where
+   * eq is means  'equal' when two arguments are equal.
+   * gt is means 'greater than' when first argument is greater than second one.
+   * gte is means 'greater than or equal' when first argument is greater than or eual to second one.
+   * lt is means 'lesser than' when first argument is lesser than second one.
+   * lte is means 'lesser than or equal' when first argument is lesser than second one.
+   * ne is means 'not equal' when wo arguments are not equal.
+   * 
    * @param {(string|object)} time1 24 hour object { day, hour, minute, second, meridiem }
    * @param {string} time1 e.g. "01:03:03" or "01:03:03 am"
    * @param {int} time1.hour hour, value should be either in the range of 1 to 23
